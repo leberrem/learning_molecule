@@ -17,7 +17,7 @@ cd maj_cert
 molecule test
 ```
 
-> utiliser `goss` à la place de `testinfra` par défaut pour tester via ansible
+> utiliser `goss` à la place de `testinfra` par défaut pour tester via ansible<br>
 > <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
 
 ## 2. Intégration du code du role
