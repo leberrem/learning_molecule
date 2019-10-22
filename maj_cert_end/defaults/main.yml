@@ -1,3 +1,0 @@
----
-haproxy_dir: "/etc/haproxy"
-frontend_port: "443"

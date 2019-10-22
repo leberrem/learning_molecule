@@ -256,7 +256,7 @@ cert_files: []
 
 ```yml
 ---
-haproxy_dir: "/etc/haproxy"
+certs_dir: "/etc/haproxy"
 ```
 
 </p>
@@ -270,7 +270,7 @@ haproxy_dir: "/etc/haproxy"
 - name: "Copy ssl cert for web server"
   copy:
     src: "{{ item.folder }}/{{ item.filename }}"
-    dest: "{{ haproxy_dir }}/{{ item.filename }}"
+    dest: "{{ certs_dir }}/{{ item.filename }}"
   with_items:
     - "{{ cert_files }}"
 
@@ -377,7 +377,7 @@ molecule converge
 - name: "Copy ssl cert for web server"
   copy:
     src: "{{ item.folder }}/{{ item.filename }}"
-    dest: "{{ haproxy_dir }}/{{ item.filename }}"
+    dest: "{{ certs_dir }}/{{ item.filename }}"
   with_items:
     - "{{ cert_files }}"
   notify:
@@ -403,7 +403,7 @@ molecule idempotence
 - name: "Copy ssl cert for web server"
   copy:
     src: "{{ item.folder }}/{{ item.filename }}"
-    dest: "{{ haproxy_dir }}/{{ item.filename }}"
+    dest: "{{ certs_dir }}/{{ item.filename }}"
   with_items:
     - "{{ cert_files }}"
   notify:
@@ -415,7 +415,7 @@ molecule idempotence
 
 - name: "create certs string"
   set_fact:
-    certs_strings: "{{ certs_strings }} crt {{ haproxy_dir }}/{{ item.filename }}"
+    certs_strings: "{{ certs_strings }} crt {{ certs_dir }}/{{ item.filename }}"
   with_items:
     - "{{ cert_files }}"
 
@@ -425,7 +425,7 @@ molecule idempotence
 
 - name: "update ssl configuration"
   lineinfile:
-    path: "{{ haproxy_dir }}/haproxy.cfg"
+    path: "{{ haproxy_config }}"
     regexp: '(^.*{{ frontend_port }}.*?)\ crt.*(\ no-sslv3.*$)'
     line: '\1{{ certs_strings }}\2'
     backrefs: yes
@@ -442,7 +442,8 @@ molecule idempotence
 
 ```yml
 ---
-haproxy_dir: "/etc/haproxy"
+haproxy_config: "/etc/haproxy/haproxy.cfg"
+certs_dir: "/etc/haproxy"
 frontend_port: "443"
 ```
 
@@ -533,3 +534,11 @@ verifier:
 ```shell
 molecule test
 ```
+
+## 9. Intégration CI/CD
+
+> TODO
+
+## 10. driver VAGRANT
+
+> TODO
