@@ -489,7 +489,7 @@ On valide en rejouant un test complet
 molecule test
 ```
 
-## 8. Test Debian
+## 9. Ajout d'une disctribution
 
 * Ajout d'un test sur debian
 
@@ -516,15 +516,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: debian
     image: debian:stretch
-    # --- systemd ---
-    command: /sbin/init
-    security_opts:
-      - seccomp=path/to/seccomp.json
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    # --- use fakesystemd ---
 provisioner:
   name: ansible
   lint:
