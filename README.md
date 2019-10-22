@@ -11,11 +11,40 @@ pip install 'molecule[docker]'
 
 ## 1. Création du rôle
 
+* Création du role
+
 ```shell
 molecule init role --verifier-name goss --role-name maj_cert
 cd maj_cert
 molecule test
 ```
+* Mise à jour des meta
+
+<details><summary>meta/main.yml</summary>
+<p>
+
+```yml
+---
+galaxy_info:
+  author: Mikaël LE BERRE
+  description: Configuration des certificats HAProxy
+  company: MLB
+  license: Private
+  min_ansible_version: 1.2
+  platforms:
+  - name: Centos
+    versions:
+    - 7
+  - name: Ubuntu
+    versions:
+    - 16.04
+  galaxy_tags: []
+dependencies: []
+```
+
+</p>
+</details>
+
 
 > utiliser `goss` à la place de `testinfra` par défaut pour tester via ansible<br>
 > <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
@@ -545,9 +574,38 @@ verifier:
 molecule test
 ```
 
-## 9. Intégration CI/CD
+## 9. Intégration GITLAB CI
 
-> TODO
+* Ajout de `.gitlab-ci.yml`
+
+<details><summary>.gitlab-ci.yml</summary>
+<p>
+
+```yml
+---
+image: quay.io/ansible/molecule:latest
+services:
+  - docker:dind
+
+stages:
+  - tests
+
+before_script:
+  - docker -v
+  - python -V
+  - ansible --version
+  - molecule --version
+
+molecule:
+  stage: tests
+  tags:
+    - docker
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    PY_COLORS: 1
+  script:
+    - molecule test
+```
 
 ## 10. driver VAGRANT
 
