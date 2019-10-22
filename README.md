@@ -19,6 +19,9 @@ cd maj_cert
 molecule test
 ```
 
+> On utilise `goss` à la place de `testinfra` par défaut pour decrire les tests en ansible<br>
+> <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
+
 * Mise à jour des meta
 
 <details><summary>meta/main.yml</summary>
@@ -46,11 +49,7 @@ dependencies: []
 </p>
 </details>
 
-
-> utiliser `goss` à la place de `testinfra` par défaut pour tester via ansible<br>
-> <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
-
-## 2. Intégration du code du role
+## 2. Intégration du code legacy dans le role
 
 Remplacement de `main.yml` du repertoire `tasks` par le fichier du role `legacy`
 
@@ -58,10 +57,10 @@ Remplacement de `main.yml` du repertoire `tasks` par le fichier du role `legacy`
 molecule lint
 ```
 
-## 3. Preparation environnement
+## 3. Preparation de l'environnement
 
-Création d'un fichier `prepare.yml` qui installe et configure haproxy pour test
-Enplacement `molecule`>>>`default`>>>`prepare.yml`
+Création d'un fichier `prepare.yml` qui installe et configure haproxy pour test<br>
+Enplacement `molecule`>>>`default`>>>`prepare.yml`<br>
 Création du dossier et fichiers de ressources:
 
 * resources/
@@ -223,7 +222,7 @@ molecule create
 
 ## 4. Correction du problème préparation
 
-Modification de la construction du conteneur pour supporter `systemd`
+* Modification de la construction du conteneur pour supporter `systemd`
 
 <details><summary>molecule/molecule.yml</summary>
 <p>
@@ -264,7 +263,7 @@ molecule destroy
 molecule create
 ```
 
-## 5. Refactoring et certificats
+## 5. Refactoring et certificats de test
 
 * Utilisation des dossiers `vars` et `default`
 * Refactoring et utilisation d'une boucle sur les certificats
@@ -341,7 +340,7 @@ rm -f ${name}.crt ${name}.csr ${name}.key
 openssl x509 -enddate -noout -in ${name}.pem
 ```
 
-Generation des certificats
+Generation des certificats de test
 ```shell
 cd molecule/default/resources
 sh ./create_certificate.sh test
@@ -451,7 +450,7 @@ molecule idempotence
     - "{{ cert_files }}"
 
 - name: "view certs string"
-  debug: 
+  debug:
     msg: "{{ certs_strings }}"
 
 - name: "update ssl configuration"
@@ -575,7 +574,7 @@ verifier:
 molecule test
 ```
 
-## 9. Intégration GITLAB CI
+## 10. Intégration dans GITLAB CI
 
 * Ajout de `.gitlab-ci.yml`
 
@@ -608,6 +607,6 @@ molecule:
     - molecule test
 ```
 
-## 10. driver VAGRANT
+## 11. Bonus - Utilisation du driver VAGRANT
 
 > TODO
