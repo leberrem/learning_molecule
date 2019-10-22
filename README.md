@@ -489,7 +489,7 @@ On valide en rejouant un test complet
 molecule test
 ```
 
-## 9. Ajout d'une disctribution
+## 9. Ajout d'une distribution
 
 * Ajout d'un test sur debian
 
