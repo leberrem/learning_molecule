@@ -18,6 +18,7 @@ molecule test
 ```
 
 > utiliser `goss` à la place de `testinfra` par défaut pour tester via ansible
+> <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
 
 ## 2. Intégration du code du role
 
