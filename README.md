@@ -492,7 +492,7 @@ molecule test
 
 ## 9. Ajout d'une distribution
 
-* Ajout d'un test sur debian
+* Ajout d'un test sur ubuntu
 
 <details><summary>molecule.yml</summary>
 <p>
@@ -515,9 +515,18 @@ platforms:
       - /tmp
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: debian
-    image: debian:stretch
-    # --- use fakesystemd ---
+  - name: ubuntu
+    image: ubuntu:16.04
+    # --- systemd ---
+    command: /sbin/init
+    security_opts:
+      - seccomp=unconfined  
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
   lint:
