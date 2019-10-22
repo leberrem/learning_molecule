@@ -1,0 +1,15 @@
+# Molecule managed
+
+---
+command:
+  version:
+    # required attributes
+    exit-status: 0
+    # defaults to hash key
+    exec: "echo -n | openssl s_client -connect 127.0.0.1:443 -servername test2.com 2>/dev/null | openssl x509 -noout -text | grep -i 'subject:' | sed 's/^.*CN=//'" 
+    # optional attributes
+    stdout:
+    - test2.com
+    stderr: []
+    timeout: 10000 # in milliseconds
+    skip: false

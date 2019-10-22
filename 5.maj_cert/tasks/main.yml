@@ -1,0 +1,12 @@
+---
+- name: "Copy ssl cert for web server"
+  copy:
+    src: "{{ item.folder }}/{{ item.filename }}"
+    dest: "{{ haproxy_dir }}/{{ item.filename }}"
+  with_items:
+    - "{{ cert_files }}"
+
+- name: "Reload Haproxy configuration"
+  service:
+    name: "haproxy"
+    state: reloaded

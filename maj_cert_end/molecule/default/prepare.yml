@@ -1,0 +1,40 @@
+---
+
+- name: "Prepare"
+  hosts: all
+  become: yes
+
+  vars:
+    haproxy_dir: "/etc/haproxy"
+
+  tasks:
+    - name: "Prepare : Install haproxy"
+      package:
+        name: "haproxy"
+        state: present
+
+    - name: "Prepare : Install openssl"
+      package:
+        name: "openssl"
+        state: present
+
+    - name: "Prepare : generate certificate"
+      shell: |
+        openssl genrsa -out {{ haproxy_dir }}/mydomain.key 2048
+        openssl req -new -key {{ haproxy_dir }}/mydomain.key -out {{ haproxy_dir }}/mydomain.csr -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=default.com"
+        openssl x509 -req -days 365 -in {{ haproxy_dir }}/mydomain.csr -signkey {{ haproxy_dir }}/mydomain.key -out {{ haproxy_dir }}/mydomain.crt
+        cat {{ haproxy_dir }}/mydomain.key {{ haproxy_dir }}/mydomain.crt > {{ haproxy_dir }}/mydomain.pem
+
+    - name: "Prepare : copy resources"
+      copy:
+        src: "{{ item }}"
+        dest: "{{ haproxy_dir }}"
+      with_items:
+        - resources/200.http
+        - resources/503.http
+        - resources/haproxy.cfg
+
+    - name: "Prepare : reload Haproxy configuration"
+      service:
+        name: "haproxy"
+        state: reloaded
