@@ -18,6 +18,7 @@ molecule init role --verifier-name goss --role-name maj_cert
 cd maj_cert
 molecule test
 ```
+
 * Mise à jour des meta
 
 <details><summary>meta/main.yml</summary>
