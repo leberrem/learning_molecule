@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  roles:
+    - role: maj_cert
+      cert_files:
+        - filename: "test.pem"
+          folder: "resources"
+        - filename: "test2.pem"
+          folder: "resources"
