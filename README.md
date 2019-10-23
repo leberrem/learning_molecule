@@ -361,6 +361,7 @@ cd -
 ---
 - name: Converge
   hosts: all
+  become: yes
   roles:
     - role: maj_cert
       cert_files:
@@ -610,6 +611,45 @@ molecule:
     - molecule test
 ```
 
+</p>
+</details>
+
 ## 11. Bonus - Utilisation du driver VAGRANT
 
-> TODO
+* Dupliquer le dossier `molecule/default` en `molecule vagrant`
+* Modifier le fichier `molecule/vagrant/molecule.yml` pour changer le driver et platforms
+* Installer le module python vagrant : `pip install python-vagrant`
+* Pré-requis `vagrant` et `virtualbox`
+
+<details><summary>.molecule.yml</summary>
+<p>
+
+```yml
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    box: ubuntu/xenial64
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+verifier:
+  name: goss
+  lint:
+    name: yamllint
+```
+
+</p>
+</details>
+
+```shell
+molecule test -s vagrant
+```
