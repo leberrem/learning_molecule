@@ -369,6 +369,7 @@ cd -
           folder: "resources"
         - filename: "test2.pem"
           folder: "resources"
+      maj_haproxy_config: true
 ```
 
 </p>
@@ -443,29 +444,34 @@ molecule idempotence
   notify:
      - Reload Haproxy configuration
 
-- name: "intialize certs string"
-  set_fact:
-    certs_strings: ""
+- name: "Update HAProxy configuration"
+  block:
 
-- name: "create certs string"
-  set_fact:
-    certs_strings: "{{ certs_strings }} crt {{ certs_dir }}/{{ item.filename }}"
-  with_items:
-    - "{{ cert_files }}"
+  - name: "intialize certs string"
+    set_fact:
+      certs_strings: ""
 
-- name: "view certs string"
-  debug:
-    msg: "{{ certs_strings }}"
+  - name: "create certs string"
+    set_fact:
+      certs_strings: "{{ certs_strings }} crt {{ certs_dir }}/{{ item.filename }}"
+    with_items:
+      - "{{ cert_files }}"
 
-- name: "update ssl configuration"
-  lineinfile:
-    path: "{{ haproxy_config }}"
-    regexp: '(^.*{{ frontend_port }}.*?)\ crt.*(\ no-sslv3.*$)'
-    line: '\1{{ certs_strings }}\2'
-    backrefs: yes
-    state: present
-  notify:
-     - Reload Haproxy configuration
+  - name: "view certs string"
+    debug:
+      msg: "{{ certs_strings }}"
+
+  - name: "update ssl configuration"
+    lineinfile:
+      path: "{{ haproxy_config }}"
+      regexp: '(^.*{{ frontend_port }}.*?)\ crt.*(\ no-sslv3.*$)'
+      line: '\1{{ certs_strings }}\2'
+      backrefs: yes
+      state: present
+    notify:
+      - Reload Haproxy configuration
+
+  when: maj_haproxy_config
 ```
 
 </p>
@@ -476,13 +482,35 @@ molecule idempotence
 
 ```yml
 ---
-haproxy_config: "/etc/haproxy/haproxy.cfg"
 certs_dir: "/etc/haproxy"
+maj_haproxy_config: false
+haproxy_config: "/etc/haproxy/haproxy.cfg"
 frontend_port: "443"
 ```
 
 </p>
 </details>
+
+<details><summary>molecule/default/playbook.yml</summary>
+<p>
+
+```yml
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: maj_cert
+      cert_files:
+        - filename: "test.pem"
+          folder: "resources"
+        - filename: "test2.pem"
+          folder: "resources"
+      maj_haproxy_config: true
+```
+
+</p>
+</details>
+
 
 ```shell
 molecule converge
@@ -667,6 +695,7 @@ verifier:
           folder: "resources"
         - filename: "test2.pem"
           folder: "resources"
+      maj_haproxy_config: true
 ```
 
 </p>

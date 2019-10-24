@@ -1,4 +1,0 @@
----
-haproxy_config: "/etc/haproxy/haproxy.cfg"
-certs_dir: "/etc/haproxy"
-frontend_port: "443"
