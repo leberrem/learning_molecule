@@ -618,10 +618,12 @@ molecule:
 
 * Dupliquer le dossier `molecule/default` en `molecule vagrant`
 * Modifier le fichier `molecule/vagrant/molecule.yml` pour changer le driver et platforms
+* Modifier le fichier `molecule/vagrant/playbook` pour y ajouter `become: true`
+> Contrairement à docker qui s'execute en tant que root vagrant utilise un utilisateur avec les droits `sudo`
 * Installer le module python vagrant : `pip install python-vagrant`
 * Pré-requis `vagrant` et `virtualbox`
 
-<details><summary>.molecule.yml</summary>
+<details><summary>molecule.yml</summary>
 <p>
 
 ```yml
@@ -645,6 +647,26 @@ verifier:
   name: goss
   lint:
     name: yamllint
+```
+
+</p>
+</details>
+
+<details><summary>playbook.yml</summary>
+<p>
+
+```yml
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: maj_cert
+      cert_files:
+        - filename: "test.pem"
+          folder: "resources"
+        - filename: "test2.pem"
+          folder: "resources"
 ```
 
 </p>
