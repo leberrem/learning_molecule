@@ -1,6 +1,6 @@
 # MOLECULE
 
-> Ce TP partira d'un code **legacy** et tentera de montrer la valeur des tests via **Molecule** ainsi que les bonnes ptratiques de développement **ansible**.<br>
+> Ce TP partira d'un code **legacy** et tentera de montrer la valeur des tests via **Molecule** ainsi que les bonnes pratiques de développement **ansible**.<br>
 > Le but de ce role est de mettre à jour les **certificats** de **HAProxy** pour le port HTTPS.
 
 ## Installation
