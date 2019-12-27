@@ -10,6 +10,9 @@ img[alt~="center"] {
   display: block;
   margin: 0 auto;
 }
+img[alt~="right"] {
+  float: right;
+}
 img {
   background: transparent
 }
@@ -23,17 +26,25 @@ h1 {
 
 </style>
 
+<style scoped>
+{
+  text-align: center;
+}
+</style>
+
 ![width:400px center](images/molecule.png)
+
+Automatisation des tests ANSIBLE
 
 ---
 
 ## Généralités
 
-* Version 2 majeure en 2017
-* Version mineure tous les 2 mois
-* Module écrit en python
-* Appartient au projet Ansible
-* S'appuie sur les normes ansible-galaxy
+- Version 2 majeure en 2017
+- Version mineure tous les 2 mois
+- Module écrit en python
+- Appartient au projet Ansible
+- S'appuie sur les normes ansible-galaxy
 
 ---
 
@@ -82,14 +93,14 @@ molecule –version
 
 ### Driver Docker
 
-* Runtime docker
-* Module docker-py
+- Runtime docker
+- Module docker-py
 
 ### Driver VAGRANT
 
-* Vagrant
-* VirtualBox
-* Module python-vagrant
+- Vagrant
+- VirtualBox
+- Module python-vagrant
 
 ---
 
@@ -108,12 +119,13 @@ molecule –version
 <style scoped>
 {
   text-align: center;
+  font-size: 40px;
 }
 </style>
 
 # Idempotence
 
-une opération qui abouti au ***même résultat*** qu'on l'applique une ou ***plusieurs fois***.
+Opération qui a le **même effet** qu'on l'applique une ou **plusieurs fois**.
 
 ---
 
@@ -154,6 +166,89 @@ une opération qui abouti au ***même résultat*** qu'on l'applique une ou ***pl
 
 ---
 
+<style scoped>
+{
+  font-size: 14px;
+}
+</style>
+
+## Default lifecycle
+
+|| test | check | lint | syntax | create | prepare | converge | idempotence | destroy |
+|-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|lint|:white_check_mark:||:white_check_mark:|||||||
+|dependency|:white_check_mark:|:white_check_mark:|:white_check_mark:||:white_check_mark:||:white_check_mark:|||
+|cleanup|:white_check_mark:|:white_check_mark:||||||||
+|destroy|:white_check_mark:|:white_check_mark:||||||||
+|syntax|:white_check_mark:|||:white_check_mark:||||||
+|create|:white_check_mark:|:white_check_mark:|||:white_check_mark:|:white_check_mark:||||
+|prepare|:white_check_mark:|:white_check_mark:|||:white_check_mark:|:white_check_mark:|:white_check_mark:|||
+|converge|:white_check_mark:|:white_check_mark:|||||:white_check_mark:|||
+|check||:white_check_mark:||||||||
+|idempotence|:white_check_mark:|||||||:white_check_mark:||
+|side_effect|:white_check_mark:|||||||||
+|verify|:white_check_mark:|||||||||
+|cleanup|:white_check_mark:|:white_check_mark:|||||||:white_check_mark:|
+|destroy|:white_check_mark:|:white_check_mark:|||||||:white_check_mark:|
+
+---
+
+# Molecule.yml - configuration 1/2
+
+**provisioner**
+Outil d'execution des scénarios (ansible uniquement)
+
+**lint**
+Outil de contrôle de syntaxe (yamllint uniquement)
+
+**driver**
+Outil utilisé pour la création des instances (Ex: docker, vagrant, azure, openstack, ...)
+
+**platforms**
+Liste et configuration des instances crées pour les tests
+
+---
+
+# Molecule.yml - configuration 2/2
+
+**verifier**
+Outil de test (Ex: testinfra, goss, ...)
+
+**Scenario**
+Liste des scénarios (Ex: default)
+
+**dependency**
+Outil de recherche des dépendances (Ex: galaxy, gilt, ...)
+
+---
+
+# Quelques commandes
+
+- `molecule list` : Liste les scénarios
+- `Molecule matrix <stage>` : Liste les etapes
+- `Molecule test` : Lance un scénario de test (`-s <scenario>`)
+- `molecule init role –r <role>` : Initialise un dossier de role
+- `molecule init role --role-name myrole --verifier-name goss --driver-name docker` : exemple d'intialisation avec options
+- `Molecule init scenario <scenario>` : Ajoute un scénario à un role existant
+
+---
+
+<style scoped>
+{
+  text-align: center;
+}
+</style>
+
+# Astuce
+
+Afficher plus de traces pour le debug
+
+```sh
+export MOLECULE_NO_LOG=false
+```
+
+---
+
 ![bg cover](images/doc.jpg)
 
 <style scoped>
@@ -167,8 +262,9 @@ h1 {
 </style>
 
 # Exercices
-If you put your mind to it,
-you can accomplish anything !
+
+*If you put your mind to it,
+you can accomplish anything !*
 
 ---
 
@@ -180,11 +276,13 @@ section {
 
 ![bg left:40%](images/caffeine.jpg)
 
-<style scoped>
-h1 {
-  color: black;
-}
-</style>
+![width:200px right ](images/marty.jpg)
 
 # Merci à tous
-((( Une seule molécule compte )))
+
+*Roads? Where we're going, we don't need roads.*
+
+<br>
+<br>
+<br>
+<br>
