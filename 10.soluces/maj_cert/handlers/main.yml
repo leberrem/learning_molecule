@@ -1,0 +1,6 @@
+---
+# handlers file for maj_cert
+- name: "Reload Haproxy"
+  service:
+    name: "haproxy"
+    state: reloaded

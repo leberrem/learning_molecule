@@ -1,0 +1,15 @@
+---
+- name: "Copy ssl cert monservice.com for web server"
+  copy: src=../../playbooks/haproxy/files/monservice.com dest=/etc/haproxy/monservice.com.pem
+  become: true
+  become_user: root
+
+- name: "Copy ssl cert mouncloud.fr for web server"
+  copy: src=../../playbooks/haproxy/files/mouncloud.fr dest=/etc/haproxy/mouncloud.fr.pem
+  become: true
+  become_user: root
+
+- name: "Restart Haproxy service"
+  service: name=haproxy state=reloaded
+  become: true
+  become_user: root

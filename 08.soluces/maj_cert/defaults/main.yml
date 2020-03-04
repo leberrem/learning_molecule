@@ -1,0 +1,6 @@
+---
+# defaults file for maj_cert
+certs_dir: "/etc/haproxy"
+maj_haproxy_config: false
+haproxy_config: "/etc/haproxy/haproxy.cfg"
+frontend_port: "443"

@@ -1,0 +1,3 @@
+---
+# defaults file for maj_cert
+certs_dir: "/etc/haproxy"
