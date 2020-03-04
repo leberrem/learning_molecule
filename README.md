@@ -1,6 +1,10 @@
 # MOLECULE
 
+<div align="center">
+
 ![black molecule](images/black%20molecule.png)
+
+</div>
 
 
 
