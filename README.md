@@ -14,6 +14,7 @@
 ```shell
 sudo apt-get install -y python-pip3libssl-dev
 sudo pip install --upgrade --user setuptools
+sudo pip install 'ansible==2.9.5'
 sudo pip install 'molecule==2.22'
 sudo pip install 'molecule[docker]'
 sudo pip install 'molecule[lint]'
@@ -399,6 +400,15 @@ molecule converge
 ```shell
 > TASK [maj_cert : Reload Haproxy configuration] *********************************<br>
 `changed`: [instance]
+```
+
+```shell
+molecule idempotence
+```
+
+```shell
+ERROR: Idempotence test failed because of the following tasks:
+* [instance] => maj_cert : Reload Haproxy configuration
 ```
 
 * Déporter le reload de haproxy dans un `handler`

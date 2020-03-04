@@ -41,10 +41,10 @@ Automatisation des tests ANSIBLE
 ## Généralités
 
 - Version 2 majeure en 2017
-- Version mineure tous les 2 mois
+- Version 3 majeure en 2020
 - Module écrit en python
 - Appartient au projet Ansible
-- S'appuie sur les normes ansible-galaxy
+- PArtage des normes ansible-galaxy
 
 ---
 
@@ -73,15 +73,15 @@ Automatisation des tests ANSIBLE
 ---
 
 ```bash
-# Python
+# Python 2
 sudo apt install -y python
 sudo apt install -y python-pip libssl-dev
 
 # Ansible
-pip install ansible
+sudo pip install 'ansible==2.9.5'
 
 # Molecule
-pip install molecule
+sudo pip install 'molecule==2.22'
 molecule –version
 ```
 
@@ -94,13 +94,13 @@ molecule –version
 ### Driver Docker
 
 - Runtime docker
-- Module docker-py
+- Module python : `docker`
 
 ### Driver VAGRANT
 
 - Vagrant
 - VirtualBox
-- Module python-vagrant
+- Module python : `python-vagrant`
 
 ---
 
@@ -230,6 +230,7 @@ Outil de recherche des dépendances (Ex: galaxy, gilt, ...)
 - `molecule init role –r <role>` : Initialise un dossier de role
 - `molecule init role --role-name myrole --verifier-name ansible --driver-name docker` : exemple d'intialisation avec options
 - `Molecule init scenario <scenario>` : Ajoute un scénario à un role existant
+- `Molecule login` : Connection à l'instance créée
 
 ---
 
