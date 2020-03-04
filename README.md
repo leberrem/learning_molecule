@@ -689,7 +689,7 @@ lint:
   name: yamllint
 platforms:
   - name: instance
-    box: ubuntu/xenial64
+    box: centos/7
 provisioner:
   name: ansible
   lint:
