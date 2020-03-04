@@ -228,7 +228,7 @@ Outil de recherche des dépendances (Ex: galaxy, gilt, ...)
 - `Molecule matrix <stage>` : Liste les etapes
 - `Molecule test` : Lance un scénario de test (`-s <scenario>`)
 - `molecule init role –r <role>` : Initialise un dossier de role
-- `molecule init role --role-name myrole --verifier-name goss --driver-name docker` : exemple d'intialisation avec options
+- `molecule init role --role-name myrole --verifier-name ansible --driver-name docker` : exemple d'intialisation avec options
 - `Molecule init scenario <scenario>` : Ajoute un scénario à un role existant
 
 ---
@@ -239,12 +239,18 @@ Outil de recherche des dépendances (Ex: galaxy, gilt, ...)
 }
 </style>
 
-# Astuce
+# Debug
 
-Afficher plus de traces pour le debug
+Afficher plus de traces
 
 ```sh
 export MOLECULE_NO_LOG=false
+```
+
+Mettre ansible en mode debug
+
+```sh
+molecule --debug <action>
 ```
 
 ---

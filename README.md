@@ -1,20 +1,25 @@
 # MOLECULE
 
+![black molecule](images/black%20molecule.png)
+
+
+
 > Ce TP partira d'un code **legacy** et tentera de montrer la valeur des tests via **Molecule** ainsi que les bonnes pratiques de développement **ansible**.<br>
 > Le but de ce role est de mettre à jour les **certificats** de **HAProxy** pour le port HTTPS.
 
 ## Installation
 
 ```shell
-sudo apt-get install -y python-pip libssl-dev
+sudo apt-get install -y python-pip3libssl-dev
 sudo pip install --upgrade --user setuptools
-pip install --user molecule
-pip install 'molecule[docker]'
+sudo pip install 'molecule==2.22'
+sudo pip install 'molecule[docker]'
+sudo pip install 'molecule[lint]'
 ```
 
 ## 1. Création du rôle
 
-* Création du role
+* Création du rôle
 
 ```shell
 molecule init role --verifier-name goss --role-name maj_cert
@@ -22,7 +27,7 @@ cd maj_cert
 molecule test
 ```
 
-> On utilise `goss` à la place de `testinfra` par défaut pour decrire les tests en ansible<br>
+> On utilise `goss` à la place de `testinfra` par défaut pour décrire les tests en ansible<br>
 > <https://github.com/aelsabbahy/goss/blob/master/docs/manual.md>
 
 * Mise à jour des meta
@@ -37,7 +42,7 @@ galaxy_info:
   description: Configuration des certificats HAProxy
   company: MLB
   license: Private
-  min_ansible_version: 1.2
+  min_ansible_version: 2.9
   platforms:
   - name: Centos
     versions:
@@ -52,18 +57,18 @@ dependencies: []
 </p>
 </details>
 
-## 2. Intégration du code legacy dans le role
+## 2. Intégration du code legacy dans le rôle
 
-Remplacement de `main.yml` du repertoire `tasks` par le fichier du role `legacy`
+Remplacement de `main.yml` du répertoire `tasks` par le fichier du rôle `legacy`
 
 ```shell
 molecule lint
 ```
 
-## 3. Preparation de l'environnement
+## 3. Préparation de l'environnement
 
 Création d'un fichier `prepare.yml` qui installe et configure haproxy pour test<br>
-Enplacement `molecule`>>>`default`>>>`prepare.yml`<br>
+Emplacement `molecule`>>>`default`>>>`prepare.yml`<br>
 Création du dossier et fichiers de ressources:
 
 * resources/
@@ -223,6 +228,11 @@ backend b_default
 molecule create
 ```
 
+```shell
+TASK [Prepare : reload Haproxy configuration] **********************************
+fatal: [instance]: FAILED! => {"changed": false, "msg": "Could not find the requested service haproxy: "}
+```
+
 ## 4. Correction du problème préparation
 
 * Modification de la construction du conteneur pour supporter `systemd`
@@ -270,7 +280,7 @@ molecule create
 
 * Utilisation des dossiers `vars` et `default`
 * Refactoring et utilisation d'une boucle sur les certificats
-* Generation des certificats à uploader
+* Génération des certificats à uploader
 * Ajout de paramètres au lancement du rôle
 
 <details><summary>vars/main.yml</summary>
@@ -343,7 +353,7 @@ rm -f ${name}.crt ${name}.csr ${name}.key
 openssl x509 -enddate -noout -in ${name}.pem
 ```
 
-Generation des certificats de test
+Génération des certificats de test
 ```shell
 cd molecule/default/resources
 sh ./create_certificate.sh test
@@ -369,7 +379,6 @@ cd -
           folder: "resources"
         - filename: "test2.pem"
           folder: "resources"
-      maj_haproxy_config: true
 ```
 
 </p>
@@ -377,7 +386,6 @@ cd -
 
 ```shell
 molecule converge
-molecule idempotence
 ```
 
 ## 6. Gestion de l'idempotence
@@ -385,8 +393,11 @@ molecule idempotence
 ```shell
 molecule converge
 ```
+
+```shell
 > TASK [maj_cert : Reload Haproxy configuration] *********************************<br>
 `changed`: [instance]
+```
 
 * Déporter le reload de haproxy dans un `handler`
 
@@ -395,7 +406,7 @@ molecule converge
 
 ```yml
 ---
-- name: "Reload Haproxy configuration"
+- name: "Reload Haproxy"
   service:
     name: "haproxy"
     state: reloaded
@@ -416,7 +427,7 @@ molecule converge
   with_items:
     - "{{ cert_files }}"
   notify:
-     - Reload Haproxy configuration
+     - Reload Haproxy
 ```
 
 </p>
@@ -434,6 +445,7 @@ molecule idempotence
 <p>
 
 ```yml
+
 ---
 - name: "Copy ssl cert for web server"
   copy:
@@ -442,7 +454,7 @@ molecule idempotence
   with_items:
     - "{{ cert_files }}"
   notify:
-     - Reload Haproxy configuration
+     - Reload Haproxy
 
 - name: "Update HAProxy configuration"
   block:
@@ -469,7 +481,7 @@ molecule idempotence
       backrefs: yes
       state: present
     notify:
-      - Reload Haproxy configuration
+      - Reload Haproxy
 
   when: maj_haproxy_config
 ```
@@ -582,7 +594,7 @@ platforms:
     # --- systemd ---
     command: /sbin/init
     security_opts:
-      - seccomp=unconfined  
+      - seccomp=unconfined
     tmpfs:
       - /tmp
       - /run
@@ -644,9 +656,8 @@ molecule:
 
 ## 11. Bonus - Utilisation du driver VAGRANT
 
-* Dupliquer le dossier `molecule/default` en `molecule vagrant`
-* Modifier le fichier `molecule/vagrant/molecule.yml` pour changer le driver et platforms
-* Modifier le fichier `molecule/vagrant/playbook` pour y ajouter `become: true`
+* Modifier le fichier `molecule/default/molecule.yml` pour changer le driver et platforms
+* Modifier le fichier `molecule/default/playbook` pour y ajouter `become: true`
 > Contrairement à docker qui s'execute en tant que root vagrant utilise un utilisateur avec les droits `sudo`
 * Installer le module python vagrant : `pip install python-vagrant`
 * Pré-requis `vagrant` et `virtualbox`
@@ -702,5 +713,5 @@ verifier:
 </details>
 
 ```shell
-molecule test -s vagrant
+molecule test
 ```
