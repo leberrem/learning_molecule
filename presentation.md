@@ -44,7 +44,7 @@ Automatisation des tests ANSIBLE
 - Version 3 majeure en 2020
 - Module écrit en python
 - Appartient au projet Ansible
-- PArtage des normes ansible-galaxy
+- Partage des normes ansible-galaxy
 
 ---
 
