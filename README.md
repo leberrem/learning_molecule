@@ -732,7 +732,7 @@ verifier:
 molecule test
 ```
 
-## 12. Bonus - A lancer cette commande tu dois
+## 12. Bonus - Lancer cette commande tu dois
 
 ```shell
 docker run --rm -ti --entrypoint telnet busybox towel.blinkenlights.nl
