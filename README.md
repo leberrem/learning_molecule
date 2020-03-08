@@ -731,3 +731,9 @@ verifier:
 ```shell
 molecule test
 ```
+
+## 12. Bonus - Just for fun
+
+```shell
+docker run --rm -ti --entrypoint telnet busybox towel.blinkenlights.nl
+```
