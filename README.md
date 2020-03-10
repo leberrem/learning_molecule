@@ -751,8 +751,6 @@ before_script:
   - ansible --version
   - molecule --version
   - vagrant --version
-  - git config --global credential.helper store
-  - echo "https://${USER_CI}:${TOKEN_CI}@gitlab.mgdis.fr" | sed 's/\$/%24/g' > ~/.git-credentials
 
 molecule:
   stage: tests
