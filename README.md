@@ -81,10 +81,7 @@ Création du dossier et fichiers de ressources:
 * resources/
 * resources/200.http
 * resources/503.http
-* resources/create_certificate.sh
 * resources/haproxy.cfg
-* resources/test.pem
-* resources/test2.pem
 
 <details><summary>prepare.yml</summary>
 <p>
