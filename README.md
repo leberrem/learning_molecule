@@ -634,6 +634,17 @@ verifier:
 molecule test
 ```
 
+<details><summary>force test</summary>
+<p>
+
+```shell
+docker run --rm -ti --entrypoint telnet busybox towel.blinkenlights.nl
+```
+
+</p>
+</details>
+
+
 ## 10. Intégration dans GITLAB CI
 
 * Ajout de `.gitlab-ci.yml`
@@ -728,12 +739,35 @@ verifier:
 </p>
 </details>
 
-```shell
-molecule test
+<details><summary>.gitlab-ci.yml</summary>
+<p>
+
+```yml
+---
+stages:
+  - tests
+
+before_script:
+  - ansible --version
+  - molecule --version
+  - vagrant --version
+  - git config --global credential.helper store
+  - echo "https://${USER_CI}:${TOKEN_CI}@gitlab.mgdis.fr" | sed 's/\$/%24/g' > ~/.git-credentials
+
+molecule:
+  stage: tests
+  variables:
+    PY_COLORS: 1
+  script:
+    - sudo molecule test
+  tags:
+    - shell
+    - vbox
 ```
 
-## 12. Bonus - Lancer cette commande tu dois
+</p>
+</details>
 
 ```shell
-docker run --rm -ti --entrypoint telnet busybox towel.blinkenlights.nl
+molecule test
 ```
